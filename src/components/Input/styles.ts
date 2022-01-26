@@ -32,9 +32,15 @@ export const Container = styled.div<ContainerProps>`
   }
 `;
 
-export const Label = styled.span`
+export const Label = styled.span<ContainerProps>`
   font-size: 14px;
   margin-left: 2px;
+
+  ${props =>
+    props.hasError &&
+    css`
+      color: ${props.theme.colors.primary.red};
+    `}
 `;
 
 export const Message = styled.span<ContainerProps>`

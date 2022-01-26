@@ -18,7 +18,7 @@ export default function Input({
 
   return (
     <S.Container hasError={hasError}>
-      <S.Label>{label}</S.Label>
+      <S.Label hasError={hasError}>{label}</S.Label>
       <input ref={inputRef} {...rest} />
       {hasError && <S.Message hasError>{message}</S.Message>}
     </S.Container>
