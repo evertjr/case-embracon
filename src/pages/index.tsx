@@ -5,6 +5,8 @@ import { sanitizeCep } from '../utils/sanitizeCep';
 import { validateEmail } from '../utils/validateEmail';
 import { hasNumbers } from '../utils/hasNumbers';
 
+import * as S from './styles';
+
 const Home: NextPage = () => {
   const [hasError, setHasError] = useState({
     name: false,
@@ -69,35 +71,46 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          name="name"
-          label="Nome"
-          hasError={hasError.name}
-          onChange={handleNameChange}
-          errorMessage="Por favor, digite seu nome completo."
-        />
-        <Input
-          type="email"
-          name="email"
-          label="E-mail"
-          onChange={handleEmailChange}
-          hasError={hasError.email}
-          errorMessage="Por favor, digite um e-mail válido."
-        />
-        <Input
-          type="text"
-          name="cep"
-          label="CEP"
-          onChange={handleCepChange}
-          hasError={hasError.cep}
-          errorMessage="Por favor, digite um CEP válido."
-        />
-        <button type="submit">Enviar</button>
-      </form>
-    </>
+    <S.Container>
+      <aside>
+        <h1>Belíssima frase de efeito para chamar sua atenção, wow!</h1>
+        <h2>
+          Você realmente deveria preencher este formulário, por alguma razão.
+        </h2>
+      </aside>
+      <S.FormArea>
+        <form onSubmit={handleSubmit}>
+          <Input
+            type="text"
+            name="name"
+            label="Nome"
+            placeholder="Digite seu nome aqui..."
+            hasError={hasError.name}
+            onChange={handleNameChange}
+            errorMessage="Por favor, digite seu nome completo."
+          />
+          <Input
+            type="email"
+            name="email"
+            label="E-mail"
+            placeholder="Digite seu e-mail aqui..."
+            onChange={handleEmailChange}
+            hasError={hasError.email}
+            errorMessage="Por favor, digite um e-mail válido."
+          />
+          <Input
+            type="text"
+            name="cep"
+            label="CEP"
+            placeholder="Digite seu CEP aqui..."
+            onChange={handleCepChange}
+            hasError={hasError.cep}
+            errorMessage="Por favor, digite um CEP válido."
+          />
+          <button type="submit">Enviar</button>
+        </form>
+      </S.FormArea>
+    </S.Container>
   );
 };
 
