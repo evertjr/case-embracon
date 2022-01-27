@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import type { NextPage } from 'next';
+import Router from 'next/router';
 import Input from '../components/Input';
 import { sanitizeCep } from '../utils/sanitizeCep';
 import { validateEmail } from '../utils/validateEmail';
@@ -8,14 +9,13 @@ import { hasNumbers } from '../utils/hasNumbers';
 import * as S from './styles';
 
 const Home: NextPage = () => {
-  const [hasError, setHasError] = useState({
-    name: false,
-    email: false,
-    cep: false,
-  });
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [cep, setCep] = useState('');
+
+  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [cepError, setCepError] = useState(false);
 
   const handleSubmit = useCallback(
     event => {
@@ -23,69 +23,74 @@ const Home: NextPage = () => {
 
       try {
         if (name.length < 3 || hasNumbers(name)) {
-          setHasError({ ...hasError, name: true });
+          setNameError(true);
           return;
         }
 
-        if (!email.includes('@') || !email || !validateEmail(email)) {
-          setHasError({ ...hasError, email: true });
+        if (!email || !validateEmail(email)) {
+          setEmailError(true);
           return;
         }
 
         const sanitizedCep = sanitizeCep(cep);
         if (sanitizedCep.length < 8 || !sanitizedCep) {
-          setHasError({ ...hasError, cep: true });
+          setCepError(true);
           return;
-        } else {
-          fetch(`https://viacep.com.br/ws/${sanitizedCep}/json/`).then(
-            response =>
-              response.json().then(data => {
-                if (data.erro) {
-                  setHasError({ ...hasError, cep: true });
-                  return;
-                }
-                //armazenar as informações de endereço
-              }),
-          );
         }
+        fetch(`https://viacep.com.br/ws/${sanitizedCep}/json/`).then(response =>
+          response.json().then(data => {
+            if (data.erro) {
+              setCepError(true);
+            }
+          }),
+        );
 
-        alert('Enviado!');
+        Router.push('/welcome');
       } catch (err) {
-        alert('erro');
+        console.log('error');
       }
     },
-    [name, email, cep, sanitizeCep, hasNumbers],
+    [
+      name,
+      email,
+      cep,
+      sanitizeCep,
+      hasNumbers,
+      setEmailError,
+      setNameError,
+      setCepError,
+    ],
   );
 
   const handleNameChange = useCallback(event => {
     setName(event.target.value);
-    setHasError({ ...hasError, name: false });
+    setNameError(false);
   }, []);
   const handleEmailChange = useCallback(event => {
     setEmail(event.target.value);
-    setHasError({ ...hasError, email: false });
+    setEmailError(false);
   }, []);
   const handleCepChange = useCallback(event => {
     setCep(event.target.value);
-    setHasError({ ...hasError, cep: false });
+    setCepError(false);
   }, []);
 
   return (
     <S.Container>
       <aside>
+        <S.Logo src="logo-embracon.svg" alt="logo embracon" />
         <h1>Belíssima frase de efeito para chamar sua atenção, wow!</h1>
-        <h2>
-          Você realmente deveria preencher este formulário, por alguma razão.
-        </h2>
+        <h2>Eu sei que você quer preencher este formulário... Vá em frente.</h2>
       </aside>
       <S.FormArea>
         <form onSubmit={handleSubmit}>
+          <h3>Não iremos vender seus dados 😳</h3>
           <Input
             type="text"
             name="name"
             label="Nome"
             placeholder="Digite seu nome aqui..."
-            hasError={hasError.name}
+            hasError={nameError}
             onChange={handleNameChange}
             errorMessage="Por favor, digite seu nome completo."
           />
@@ -95,7 +100,7 @@ const Home: NextPage = () => {
             label="E-mail"
             placeholder="Digite seu e-mail aqui..."
             onChange={handleEmailChange}
-            hasError={hasError.email}
+            hasError={emailError}
             errorMessage="Por favor, digite um e-mail válido."
           />
           <Input
@@ -104,7 +109,7 @@ const Home: NextPage = () => {
             label="CEP"
             placeholder="Digite seu CEP aqui..."
             onChange={handleCepChange}
-            hasError={hasError.cep}
+            hasError={cepError}
             errorMessage="Por favor, digite um CEP válido."
           />
           <button type="submit">Enviar</button>

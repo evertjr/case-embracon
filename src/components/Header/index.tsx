@@ -14,6 +14,8 @@ export default function Input({
   errorMessage,
   ...children
 }: InputProps) {
+  // const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <S.Container hasError={hasError}>
       <S.Label hasError={hasError}>{label}</S.Label>

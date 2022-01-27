@@ -5,6 +5,8 @@ const theme = (): DefaultTheme => ({
     primary: {
       blue: '#03142E',
       red: '#CE181E',
+      lightBlue: '#7C95BF',
+      darkBlue: '#020C1C',
     },
     secondary: {
       lightBlue: '#048ABF',
