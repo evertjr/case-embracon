@@ -1,8 +1,8 @@
 import React from 'react';
 import 'jest-styled-components';
 import { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
 import { render, screen } from '@testing-library/react';
+import theme from '../../styles/theme';
 import Input from '.';
 
 describe('Input component', () => {
