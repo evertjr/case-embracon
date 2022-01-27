@@ -6,7 +6,7 @@ import { sanitizeCep } from '../utils/sanitizeCep';
 import { validateEmail } from '../utils/validateEmail';
 import { hasNumbers } from '../utils/hasNumbers';
 
-import * as S from './styles';
+import * as S from '../styles/Home.styles';
 
 const Home: NextPage = () => {
   const [name, setName] = useState('');
@@ -41,11 +41,11 @@ const Home: NextPage = () => {
           response.json().then(data => {
             if (data.erro) {
               setCepError(true);
+              return;
             }
+            Router.push('/welcome');
           }),
         );
-
-        Router.push('/welcome');
       } catch (err) {
         console.log('error');
       }
@@ -78,7 +78,7 @@ const Home: NextPage = () => {
   return (
     <S.Container>
       <aside>
-        <S.Logo src="logo-embracon.svg" alt="logo embracon" />
+        <S.Logo src="logo-embracon.svg" alt="logo embracon" width={150} />
         <h1>Belíssima frase de efeito para chamar sua atenção, wow!</h1>
         <h2>Eu sei que você quer preencher este formulário... Vá em frente.</h2>
       </aside>

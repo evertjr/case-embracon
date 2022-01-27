@@ -91,11 +91,7 @@ export const Container = styled.div`
 `;
 
 export const Logo = styled.img`
-  width: 150px;
   align-self: flex-start;
-  /* position: absolute;
-  top: 32px;
-  left: 48px; */
 `;
 
 export const FormArea = styled.div`
